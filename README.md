@@ -16,7 +16,7 @@ c.	Add the noise to the original image.
 d.	Clip the noise-modified image to keep its pixel values within the proper image data range.
 
 #### B. Model noise:
-Use VGG16 model in Tensorflow 1 for the experiments:
+Use ShuffleNet model in Pytorch for the experiments:
 1.	Train a model with the training data from A.3. 
 2.	Save the model weight files to disk
 3.	Repeat A.3 and B.1 and B.2 to train M number of different models. In order for them to be different, select each time a different seed number in A.3.
