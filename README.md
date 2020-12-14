@@ -23,7 +23,7 @@ Use VGG16 model in Tensorflow 1 for the experiments:
 
 #### C. Add noise in inference time, ensemble on N of M diverse models (where N < M):
 1.	Pre-load M models trained from B into an array or dictionary. 
-2.	In inference time, Gaussian noise (generated with tf.random.normal) with mean 0 and standard deviation specified in the parameter (For our experiments, we found a value around 0.06 for the standard deviation parameter produced good results both for PGD attack with perturbation parameter epsilon=0.03 and for CW attack) is added to the input image in the network with appropriate clipping as in A.3.d. (Randomization at inference time makes the network more robust to both single step and multiple steps attacks.)
+2.	In inference time, Gaussian noise (generated with tf.random.normal) with mean 0 and standard deviation specified in the parameter (For our experiments, we found a value around 0.1 for the standard deviation parameter produced good results both for PGD attack with perturbation parameter epsilon=0.03 and for CW attack) is added to the input image in the network with appropriate clipping as in A.3.d. (Randomization at inference time makes the network more robust to both single step and multiple steps attacks.)
 3.	For each of the M trained models, input the noise-modified image to the model and get the network output, i.e., the vector of confidence values of the image’s classes.
 4.	Select random N of the M models’ outputs from step 3 to create an ensemble of the inference outputs. For multiple steps iterative attacks, multiple gradient computation and inferences are performed.   A random subset of N models is selected for an inference of each iteration step. This will make the network more robust to multiple step attacks. 
 5.	Take the average of the N output vectors of the class confidences as the output of the inference of the ensemble model.
@@ -31,6 +31,4 @@ Use VGG16 model in Tensorflow 1 for the experiments:
 
 #### D. Some Implementation Details
 We want the subset of N of M model outputs to be randomly selected on each inference. The random selection of N models needs to happen in the network’s computation graph. The subset of N models randomly selected outside of the graph (such as using np.random.choice) will not be re-invoked on the network graph inference. Therefore, this will cause the subset of N models will not change during the multiple steps attack’s iterative network inferences or updated data fed into the graph.  We need to be careful on the implementation for this.
-i.	 In the current Tensorflow framework, there is no gradient defined for tf.random (such as RandomShuffle, i.e. tf.random.shuffle) operations.  I am not sure if this is an issue in Pytorch.
-ii.	A workaround is to wrap the tf.random operation inside tf.gather. But this may use a lot of memory in a session with many inferences. 
 
