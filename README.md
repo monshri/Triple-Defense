@@ -34,5 +34,5 @@ We want the subset of N of M model outputs to be randomly selected on each infer
 
 #### E. File structure
 Archive contains the files used for various experiments.
-The notebook idl_project_experiment_ensemble.ipynb contains the final experiments performed for our project.
+The notebook idl_project_ensemble.ipynb contains the final experiments performed for our project.
 The notebook idl_project_training_pipeline.ipynb was used to train ShuffleNet models and create the ensemble pipeline.
